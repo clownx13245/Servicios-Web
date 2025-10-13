@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
-class CustomerController extends Controller
+use Illuminate\Support\Facades\Log;
+/*class CustomerController extends Controller
 {
     public function index()
     {
@@ -17,10 +17,43 @@ class CustomerController extends Controller
             'data' => $customers
         ], 200);
     }
+*/
+
+    class CustomerController extends Controller
+{
+    public function index()
+    {
+        $customers = Customer::all();
+        
+        if ($customers->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No customers found in database',
+                'data' => []
+            ], 200); // Puedes usar 404 si prefieres
+        }
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Customers retrieved successfully',
+            'data' => $customers
+        ], 200);
+    }
+
+
+
+
 
     public function show($id)
     {
         $customer = Customer::findOrFail($id);
+
+           Log::info("Cliente encontrado", [
+            'id' => $customer->id,
+            'name' => $customer->name,
+            'email' => $customer->email
+            // agrega más campos que quieras ver
+        ]);
         return response()->json([
             'status' => true,
             'message' => 'Customer found successfully',
