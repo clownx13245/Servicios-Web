@@ -19,7 +19,7 @@ class ProductoController extends Controller
         if (!is_numeric($perPage) || $perPage < 1 || $perPage > 100) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se encontraron páginas. Por favor ingrese un número de páginas válido (mayor a 0)'
+                'message' => ' Por favor ingrese un número de productos válido (mayor a 0)'
             ], 400);
         }
             // Convertir a entero
@@ -28,6 +28,15 @@ class ProductoController extends Controller
             // Paginar productos con categoría
             $productos = Producto::with('categoria')
                                 ->paginate($perPage);
+
+           // Verificar si hay productos
+        if ($productos->count() === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontraron productos'
+            ], 404);
+        }
+        
             
             return response()->json([
                 'success' => true,
