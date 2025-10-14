@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id(); // id – PK – autoincrementable
             
             $table->string('nombre');
-            $table->unsignedBigInteger('categoria_id'); // categoría – FK
+            $table->unsignedBigInteger('categoria_id')->constrained('t_categorias')->onDelete('cascade'); // categoría – FK
             $table->integer('stock'); // stock – entero
-            $table->decimal('precio', 8, 2); // precio – decimal (8 dígitos total, 2 decimales)
+            $table->decimal('precio', 10, 2); // precio – decimal (8 dígitos total, 2 decimales)
             $table->enum('estado', ['A', 'I'])->default('A'); // estado – parametrizado (A/I)
             
             $table->timestamps();
